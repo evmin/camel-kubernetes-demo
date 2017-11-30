@@ -1,15 +1,15 @@
 ## How?
 
-The presented templated is a [widely acclaimed Camel / Springboot combination](https://egkatzioura.com/2017/11/20/spring-boot-and-apache-camel/) that implements a simple integration scenario:
+The presented blueprint is a [widely recognised Camel / Springboot combination](https://egkatzioura.com/2017/11/20/spring-boot-and-apache-camel/) that implements a simple integration scenario:
 
 * Camel consumes a message from Google PubSub subscription
 * Transforms the data
 * Updates the header to define the Bigquery table partition 
 * Writes to the Bigquery table
 
-Every exchange is logged with Google Stackdriver Logging and operational metrics collected by Google Stackdriver Monitoring from JVM andCamel.
+Every exchange is logged at Google Stackdriver Logging and operational metrics collected by Google Stackdriver Monitoring - from both JVM and Camel.
 
-The solution is packaged into a Docker image, which is uploaded to the GCP Container Registry and deployed to the GCP Kubernetes Engine. For details please refer to [GCP Project Setup](03_gcp_setup.md) and [Toolstack](02_toolstack_required.md) sections.
+The solution is packaged into a Docker image, which is uploaded to the GCP Container Registry and deployed to the GCP Kubernetes Engine. For details please refer to [GCP Project Setup](03_gcp_setup.md), [Toolstack](02_toolstack_required.md) and [Build and Deploy](04_build_deploy.md) procedures.
 
 This section covers the configuration specifics that seamlessly integrate the application into the Google Cloud Platform:
 
@@ -19,17 +19,15 @@ This section covers the configuration specifics that seamlessly integrate the ap
 - [Hawtio Console](#hawtio)
 
 
-There is also a detailed walkthrough on [how to set up GCP project](03_gcp_setup.md) and the [toolstack required](02_toolstack_required.md).
-
 ### Parameters
 
 Out of the box Kubernetes provides two delivery mechanisms for the configuration values into the container. So once a configuration map or a secret has been defined within the Kubernetes cluster, their values can be made available to the application either as files or as environmental variables. 
 
-The demo project take advantages of the latter one - environmental variables - through [Springboot Externalised Configuration options](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html). And the main purpose for that was to allow for an easy overrides.
+The demo project take advantages of the latter one - environmental variables - through [Springboot Externalised Configuration options](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html). And the main purpose for that was to allow for easy overrides.
 
 The application assumes that there are four places where the SpringBoot property can be configured:
 
-1. Springboot `application.properties`. Values defined in here can not be overridden. Generally used for Springboot configuration and hard, unchangeable standard values.
+1. Springboot `application.properties`. Values defined here can not be overridden. Generally used for Springboot configuration and hard, unchangeable standards.
 2. Custom `default.properties`. That's where usually the application specific defaults are defined.
 3. Optional file pointed by the `${external.config}` java property. The file is intended to be used by system administrators that would opt to use an external file instead of the environmental variables.
 4. Environment variables, captured and converted into Java and Camel properties by Springboot.
@@ -255,7 +253,7 @@ The blueprint presents a flexible, resilient and yet scalable approach, battle t
 
 The foundation of the blueprint is pretty generic. Any JVM based application can be deployed to GKE in this manner - ourselves we have been using it for both Apache Camel and Clojure based solutions.
 
-The source code is available at [GitHub](https://github.com/evmin/camel-kubernetes-demo) and includes the detailed instructions on:
+The source code is available at [GitHub](https://github.com/evmin/camel-kubernetes-	demo) and includes the detailed instructions on:
 
 * How to set up the Google Kubernetes Engine cluster 
 * How to set up the tooling and/or use Google Cloud Shell
