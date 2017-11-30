@@ -51,7 +51,7 @@ gcloud services enable --project $PROJECT_ID containerregistry.googleapis.com
 gcloud services enable --project $PROJECT_ID pubsub.googleapis.com
 ```
 
-## Kubernetes cluster
+## Create the Kubernetes cluster
 
 ```bash
 gcloud container clusters create "$CLUSTER_NAME" \
@@ -103,7 +103,8 @@ gcloud beta pubsub subscriptions create demo.event.bigquery --topic demo.event -
 The schema is also available as `schemas/bigquery/demo_event.json`. 
 
 ```bash
-bq mk demo
+echo 'project_id = '$PROJECT_ID >> ~/.bigqueryrc
+bq mk -d --data_location=US demo
 cat << EOF > ./bigquery_demo_event.json
 [
   {"name":"id",      "type":"STRING",  "mode": "REQUIRED", "description": "Unique Correlation ID"},

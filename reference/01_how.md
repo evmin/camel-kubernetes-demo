@@ -9,7 +9,7 @@ The presented templated is a [widely acclaimed Camel / Springboot combination](h
 
 Every exchange is logged with Google Stackdriver Logging and operational metrics collected by Google Stackdriver Monitoring from JVM andCamel.
 
-The solution is packaged into a Docker image, that is being uploaded to the GCP Container Registry and executed by GCP Kubernetes Engine.
+The solution is packaged into a Docker image, which is uploaded to the GCP Container Registry and deployed to the GCP Kubernetes Engine. For details please refer to [GCP Project Setup](03_gcp_setup.md) and [Toolstack](02_toolstack_required.md) sections.
 
 This section covers the configuration specifics that seamlessly integrate the application into the Google Cloud Platform:
 
@@ -255,7 +255,7 @@ The blueprint presents a flexible, resilient and yet scalable approach, battle t
 
 The foundation of the blueprint is pretty generic. Any JVM based application can be deployed to GKE in this manner - ourselves we have been using it for both Apache Camel and Clojure based solutions.
 
-The source code for the demo is available at GitHub and includes the detailed instructions on:
+The source code is available at [GitHub](https://github.com/evmin/camel-kubernetes-demo) and includes the detailed instructions on:
 
 * How to set up the Google Kubernetes Engine cluster 
 * How to set up the tooling and/or use Google Cloud Shell

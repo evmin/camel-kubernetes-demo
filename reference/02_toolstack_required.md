@@ -43,7 +43,7 @@ Check out the source code:
 
 ```bash
 cd ~
-git clone https://github.com/evmin/camel_kubernetes_demo.git
+git clone https://github.com/evmin/camel-kubernetes-demo.git
 ```
 
 ## Project Gradle Wrapper
@@ -51,7 +51,7 @@ git clone https://github.com/evmin/camel_kubernetes_demo.git
 And setup the Gradle Wrapper:
 
 ```bash
-cd gke-camel-demo/gke-camel-template
+cd camel-kubernetes-demo/gke-camel-template
 gradle wrapper
 ```
 
