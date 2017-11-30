@@ -255,10 +255,10 @@ The foundation of the blueprint is pretty generic. Any JVM based application can
 
 The source code is available at [GitHub](https://github.com/evmin/camel-kubernetes-	demo) and includes the detailed instructions on:
 
-* How to set up the Google Kubernetes Engine cluster 
-* How to set up the tooling and/or use Google Cloud Shell
-* How to build the docker image and push it to the private GCP Container Registry
-* How to deploy to the Kubernetes Cluster
+* [How to set up the tooling and/or use Google Cloud Shell](https://github.com/evmin/camel-kubernetes-demo/blob/master/reference/02_toolstack_required.md)
+* [How to set up the Google Kubernetes Engine cluster](https://github.com/evmin/camel-kubernetes-demo/blob/master/reference/03_gcp_setup.md) 
+* [How to build the docker image and push it to the private GCP Container Registry](https://github.com/evmin/camel-kubernetes-demo/blob/master/reference/04_build_deploy.md)
+* [How to deploy to the Kubernetes Cluster](https://github.com/evmin/camel-kubernetes-demo/blob/master/reference/04_build_deploy.md)
 
 ### Support
 
