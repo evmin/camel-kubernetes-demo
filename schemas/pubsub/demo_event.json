@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "DEMO Event",
+    "type": "object",
+    "properties": {
+        "correlationId": {
+            "type":"string", "description": "Unique business entity identifier"
+        },
+        "timestamp": {
+            "type":"integer", "description": "Unique event timestamp"
+        },
+        "text": {
+            "type":"string", "description": "Arbitrary Text"
+        }
+    },
+    "required": ["timestamp", "correlationId"]
+}

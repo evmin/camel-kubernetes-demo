@@ -1,0 +1,58 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ${app_name}
+
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ${app_name}
+        version: "${app_version}"
+
+    spec:
+      # [ Google Credentials Key as a secret based mountpoint ]
+      volumes:
+      - name: demo-cluster-key
+        secret:
+          secretName: demo-cluster-key
+
+      containers:
+      # [ container name : appears in the logs ]
+      - name: ${app_name}
+        image: ${dockerImageName}
+        imagePullPolicy: Always
+
+        volumeMounts:
+                  - name: demo-cluster-key
+                    mountPath: /etc/keys
+                    readOnly: true
+
+       # [ Environmental Variables ]
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/etc/keys/demo-cluster-key.json"
+
+        # [ Monitoring Designator ]
+        - name: APM_META_NAME
+          value: "${app_name}"
+
+        - name: gcp_project_id
+          valueFrom:
+            configMapKeyRef:
+              name: project
+              key: id
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8091
+          initialDelaySeconds: 90
+          timeoutSeconds: 30
+
+        # [ Resource Claim ]
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "256Mi"

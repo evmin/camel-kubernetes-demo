@@ -1,0 +1,10 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "correlationId": "id",
+      "timestamp":     "updated",
+      "text":          "text"
+    }
+  }
+]

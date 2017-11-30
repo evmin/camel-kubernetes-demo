@@ -1,0 +1,90 @@
+// ---------------------------
+//       [ GRADLE ]
+// ---------------------------
+buildscript {
+    repositories {
+        maven { url 'http://repo.spring.io/release' }
+        maven { url 'http://repo.spring.io/libs-release' }
+        maven { url 'https://plugins.gradle.org/m2/' }
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+plugins {
+    id 'java'
+    id 'com.palantir.docker' version '0.13.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.3.1'
+}
+
+// -------------------------------------
+//       [ APPLICATION ]
+// -------------------------------------
+def app_version = '1.0.0-SNAPSHOT'
+def app_name = 'gke-camel-template'
+
+def springBootVersion = '1.5.8.RELEASE'
+def camelVersion = '2.21.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}" ){
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile "org.springframework.boot:spring-boot-starter-undertow:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-actuator:${springBootVersion}"
+
+    // Logging and Monitoring
+    compile "org.jolokia:jolokia-core:1.3.7"
+    compile "net.logstash.logback:logstash-logback-encoder:4.9"
+
+    // Camel Components
+    compile "org.apache.camel:camel-spring-boot-starter:${camelVersion}"
+    compile "org.apache.camel:camel-core:${camelVersion}"
+    compile "org.apache.camel:camel-jolt:${camelVersion}"
+    compile "org.apache.camel:camel-google-pubsub:${camelVersion}"
+    compile "org.apache.camel:camel-google-bigquery:${camelVersion}"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+       url "https://repository.apache.org/content/repositories/snapshots/"
+    }
+}
+
+// ----------------------------
+//       [ BUILD ]
+// ----------------------------
+def dockerImageName = "gcr.io/${System.env.PROJECT_ID}/demo/${app_name}:${app_version}"
+jar {
+    baseName = app_name
+    version = app_version
+    manifest {
+        attributes("Implementation-Version": app_version)
+    }
+}
+
+docker {
+    name "${dockerImageName}"
+    dockerfile file('src/main/docker/Dockerfile')
+    files configurations.runtime, jar.outputs
+}
+
+// generates k8s deployment YAML
+task k8s(type: Copy) {
+    from 'src/main/template-k8s'
+    into "./build"
+    include "k8s-${app_name}-template.yaml"
+    rename { file -> "k8s-${app_name}-${app_version}.yaml" }
+    expand(dockerImageName: "${dockerImageName}",
+           app_name: "${app_name}",
+           app_version: "${app_version}")
+}

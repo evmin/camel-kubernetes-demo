@@ -1,0 +1,36 @@
+<jmxtrans-agent>
+
+    <collectIntervalInSeconds>${APM_INTERVAL:30}</collectIntervalInSeconds>
+
+    <queries>
+        <!-- OS -->
+        <query objectName="java.lang:type=OperatingSystem" attribute="ProcessCpuLoad" type="GAUGE:1" resultAlias="jvm.os.ProcessCpuLoad"/>
+        <query objectName="java.lang:type=OperatingSystem" attribute="SystemLoadAverage" type="GAUGE:1" resultAlias="jvm.os.SystemLoadAverage"/>
+        <!-- JVM -->
+        <query objectName="java.lang:type=Memory" attribute="HeapMemoryUsage" key="committed" type="GAUGE:By" resultAlias="jvm.memory.HeapMemoryUsage:committed"/>
+        <query objectName="java.lang:type=Memory" attribute="HeapMemoryUsage" key="used"  type="GAUGE:By" resultAlias="jvm.memory.HeapMemoryUsage:used"/>
+        <query objectName="java.lang:type=MemoryPool,name=*Eden*" attribute="Usage" key="used" type="GAUGE:By" resultAlias="jvm.memorypool:%name%"/>
+        <query objectName="java.lang:type=MemoryPool,name=*Survivor*" attribute="Usage" key="used" type="GAUGE:By" resultAlias="jvm.memorypool:%name%"/>
+        <query objectName="java.lang:type=MemoryPool,name=*Old*" attribute="Usage" key="used" type="GAUGE:By" resultAlias="jvm.memorypool:%name%"/>
+        <query objectName="java.lang:type=MemoryPool,name=*Tenured*" attribute="Usage" key="used" type="GAUGE:By" resultAlias="jvm.memorypool:%name%"/>
+        <!-- Camel -->
+        <query objectName="org.apache.camel:context=*,type=routes,name=*" attribute="ExchangesCompleted" type="CUMULATIVE:1" resultAlias="camel.route.exchanges:%name%:#attribute#"/>
+        <query objectName="org.apache.camel:context=*,type=routes,name=*" attribute="ExchangesFailed" type="CUMULATIVE:1" resultAlias="camel.route.exchanges:%name%:#attribute#"/>
+        <query objectName="org.apache.camel:context=*,type=routes,name=*" attribute="MeanProcessingTime" type="GAUGE:ms" resultAlias="camel.route.time:%name%:#attribute#"/>
+    </queries>
+
+    <outputWriter class="org.jmxtrans.agent.google.StackdriverWriter">
+        <!-- mandatory -->
+        <projectId>${APM_PROJECT_ID:}</projectId>
+        <serviceAccount>${APM_SERVICE_ACCOUNT:}</serviceAccount>
+        <serviceAccountKey>${APM_SERVICE_KEY:}</serviceAccountKey>
+        <applicationCredentials>${APM_APPLICATION_CREDENTIALS:}</applicationCredentials>
+        <!-- optional -->
+        <separator>:</separator>
+        <namePrefix>foo.</namePrefix>
+        <!-- Unrecognised entries parsed as labels -->
+        <meta_name>${APM_META_NAME:}</meta_name>
+        <hostname>${APM_HOSTNAME:}</hostname>
+    </outputWriter>
+
+</jmxtrans-agent>

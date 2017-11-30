@@ -1,0 +1,5 @@
+[
+  {"name":"id",      "type":"STRING",  "mode": "REQUIRED", "description": "Unique Correlation ID"},
+  {"name":"updated", "type":"INTEGER", "mode": "REQUIRED", "description": "Timestamp in milliseconds"},
+  {"name":"text",    "type":"STRING"}
+]
