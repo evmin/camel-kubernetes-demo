@@ -2,7 +2,7 @@
 
 The following toolstack will be required to run the demo:
 
-- Java JDK 8
+- JDK 8
 - [Gradle Build Tool](https://gradle.org/install/)
 - [Google Cloud SDK and CLI](https://cloud.google.com/sdk/downloads)
 
@@ -25,9 +25,7 @@ The shell will have almost everything necessary to run the demo - with the excep
 
 The project is managed by Gradle build tool.
 
-The easiest way to install Gradle is via SDK Man. This will install SDK man, install and enable the latest version of Gradle.
-
-**OBS!** It is critical to setup the latest version of Gradle if running the demo via the Google Cloud Shell. The gradle provided out of the box is too old to the build the project. 
+The easiest way to install the latest Gradle version is via SDK Man. This will install SDK man, install and enable the latest version of Gradle. 
 
 ```bash
 cd ~
@@ -37,21 +35,4 @@ sdk install gradle 4.3.1
 source ~/.sdkman/bin/sdkman-init.sh
 ```
 
-## Source Code
-
-Check out the source code:
-
-```bash
-cd ~
-git clone https://github.com/evmin/camel-kubernetes-demo.git
-```
-
-## Project Gradle Wrapper
-
-And setup the Gradle Wrapper:
-
-```bash
-cd camel-kubernetes-demo/gke-camel-template
-gradle wrapper
-```
-
+Gradle has been set.
