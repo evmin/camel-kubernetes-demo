@@ -1,8 +1,8 @@
 # Apache Camel with Google Kubernetes Engine
 
-A practical template on how to deploy [Apache Camel](http://camel.apache.org/) solution on [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/).
+A practical template on how to deploy an [Apache Camel](http://camel.apache.org/) solution to [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/).
 
-Prereguisites to build and deploy the demo:
+Prereguisites:
 
 * [Toolstack required](reference/02_toolstack_required.md)
 * [Google Cloud Project setup](reference/03_gcp_setup.md)
@@ -10,7 +10,7 @@ Prereguisites to build and deploy the demo:
 
 ### Overview
 
-The presented blueprint is a [widely recognised Camel / Springboot combination](https://egkatzioura.com/2017/11/20/spring-boot-and-apache-camel/) that implements a simple integration scenario:
+The presented blueprint is a [widely recognised Camel / Spring Boot combination](https://egkatzioura.com/2017/11/20/spring-boot-and-apache-camel) that implements a simple integration scenario:
 
 - Camel consumes a message from Google PubSub subscription
 - Transforms the data
@@ -34,14 +34,14 @@ This walkthrough covers:
 
 Out of the box Kubernetes provides two mechanisms to deliver configuration settings into the container:  a configuration map or a secret. Once those have been defined within the cluster, their values can be made available to the applications either as files or as environmental variables. 
 
-The demo relies on [Springboot Externalised Configuration options](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) to ingest both types and that gives the flexibility to override them at any stage of CI/CD lifecycle.
+The demo relies on [Spring Boot Externalised Configuration options](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) to ingest both types and that gives the flexibility to override them at any stage of CI/CD lifecycle.
 
-The blueprint assumes that there are four places where a SpringBoot property can be configured:
+The blueprint assumes that there are four places where a Spring Boot property can be configured:
 
-1. Springboot `application.properties`. Values defined here can not be overridden. Generally used for Springboot configuration and hard, unchangeable standards.
+1. Spring Boot `application.properties`. Values defined here can not be overridden. Generally used for Spring Boot configuration and hard, unchangeable standards.
 2. Custom `default.properties`. That's where usually the application specific defaults are defined by a developer.
 3. Optional file pointed by the `${external.config}` java property. The file is generally intended to be used by system administrators that would opt to use an external file instead of the environmental variables. 
-4. Environment variables defined through a Docker image or Kubernetes cluster, captured and converted into Java and Camel properties by Springboot.
+4. Environment variables defined through a Docker image or Kubernetes cluster, captured and converted into Java and Camel properties by Spring Boot.
 
 **Please note** - the relationship between the last three is important. 
 
@@ -73,7 +73,7 @@ There is, however, a couple of gotchas. The first one - every line collected bec
 
 The other interesting point is that these entries would be logged as INFO. Google Kubernetes logging agent - FluentD - does not know how to parse them to get the severity right. There is a number of different formats out there, so one size fits all automatic solution is indeed a hard problem.
 
-However the application CAN provide the output in the format that FluentD can understand. The format is defined in  `logback.xml` - a JSON string where the field names configured as FluentD parser requires. And thanks to the [Elastic.co](https://www.elastic.co/products/logstash) team there is also an awesome Logstash component that encolses a multilne stack trace into a single entry!
+However the application CAN provide the output in the format that FluentD can understand. The format is defined in  `logback.xml` - a JSON string where the field names configured to be recognised by FluentD parser. And thanks to the [Elastic.co](https://www.elastic.co/products/logstash) team there is also an awesome Logstash component that encloses a multiline stack trace into a single entry!
 
 ```xml
 <!-- To be able to manage the log levels through Hawtio console -->
@@ -131,11 +131,11 @@ Quoting Lord Kelvin:
 
 > If you can not measure it, you can not improve it. 
 
-Leaving aside the philisophical contention around the essence of the expression, I hope that there is a general agreement that tracking the application performance metrics is of paramount importance. 
+Leaving aside the philosophical contention around the essence of the expression, I hope that there is a general agreement that tracking the application performance metrics is of paramount importance. 
 
 There have been two general approaches around capturing the metrics from a containerised application - either an external collection crawler (a sidecar container, node service, etc) or the application itself reporting in.
 
-The option presented here can be considered to be the middleway between the two.
+The option presented here can be considered to be the middle way between the two.
 
 Even though it is the "reporting in" pattern, it is implemented by the underlying JVM and not by the application itself. 
 
@@ -186,9 +186,9 @@ The metrics collected this way are classified as Custom Metrics and are availabl
 
 Please note how the attributes and the meta name permit the granular selection:
 
-<img src="./images/monitoring_custom_metric.jpg"/>
+<img src="./reference/images/monitoring_custom_metric.jpg"/>
 
- Thers is also a possibility to prefix the custom metric names. In that case it is "foo" and it has been defined explicitly in the metrics.xml configuration file:
+ There is also a possibility to prefix the custom metric names. In that case it is "foo" and it has been defined explicitly in the metrics.xml configuration file:
 
 ```xml
 <namePrefix>foo.</namePrefix>
@@ -206,11 +206,11 @@ Yet when the agent runs outside the Kubernetes cluster (i.e. there is no interna
 
 ### Hawtio
 
-When running Apache Camel solution, on the fly introspection of the Camel context can be the key to a quick issue resolutioin. [Hawtio UI](http://hawt.io/) offers such possibility through its Camel plugin (and even allows route modifications!). 
+When running Apache Camel solution, on the fly introspection of the Camel context can be the key to a quick issue resolution. [Hawtio UI](http://hawt.io/) offers such possibility through its Camel plugin (and even allows route modifications!). 
 
 Yet it would be impractical to deploy the UI component with every solution. 
 
-Luckily Hawtio can also be started as [a standalone application](http://hawt.io/getstarted/index.html) - it just needs the access to Jolokia JMX endpoint. Which already has been enabled in the application - by Springboot!
+Luckily Hawtio can also be started as [a standalone application](http://hawt.io/getstarted/index.html) - it just needs the access to Jolokia JMX endpoint. Which already has been enabled in the application - by Spring Boot!
 
 build.grade excerpt:
 
@@ -220,7 +220,7 @@ build.grade excerpt:
     compile "net.logstash.logback:logstash-logback-encoder:4.9"
 ```
 
-Springboot application.properties:
+Spring Boot application.properties:
 
 ```
 server.port = 8091
