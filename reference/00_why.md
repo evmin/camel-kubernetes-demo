@@ -1,12 +1,10 @@
 # Introduction
 
-This post originated from a number of discussions I have had in the last few months. So I decided to summarise the thinking in a single blog post, so I can reference everyone back to these bullet points.
+This post originated from a number of discussions I have had in the last few months. So I decided to summarise the thinking in a single blog post, so I can reference it when needed. It will cover both the Why and the How aspects of the setup and I have tried to keep it brief and relatively high level.
 
 ## Why Camel on Google Kubernetes Engine?
 
 In short - a powerful combination of the best of breed technologies - Camel and Kubernetes - aimed at solving a wide range of integration tasks in an efficient and scalable manner. And on the cheap. The last point is equally important, and that's where Google pricing has an advantage.
-
-Let me give a short overview of the technologies to set the frame of reference.
 
 ## Why Camel?
 
@@ -22,25 +20,23 @@ For a more detailed review please check a very nice summary from Jonathan Anstey
 
 Why doing Containers and Kubernetes in the world where serverless computing is picking up steam? 
 
-As much as I like serverless architecture, the container based deployment is still perceived to be a bit more flexible. And this flexibility is quite important for the integration tasks, where requirements can be somewhat peculiar in terms of dependencies, latencies and execution times. Serverless is not particularly friendly for the long running processes for example. 
+As much as I like serverless architecture, the container based deployment is still perceived to be a bit more flexible. And this flexibility is quite important for the integration tasks, where requirements can be somewhat peculiar in terms of dependencies, latencies and execution times. As an example serverless is not particularly friendly for the long running processes. 
 
-Docker containers, on the other hand, strike the balance between being stateless, being easily customisable and handling the unusual tasks rather well. General adoption of Kubernetes as the emerging de-facto standard helps as well. 
+Docker containers, on the other hand, strike the balance between being stateless, being easily customisable and handling the unusual tasks rather well. General adoption of Kubernetes as the emerging de-facto standard helps too. 
 
-Shadowing a typical DevOps team for a day usually provides enough of insight as to why the combination is so awesome. Or just Google it if more information is required.
+Shadowing a typical DevOps team for a day usually provides enough of insight as to why Kubernetes is so awesome. Or just Google it.
 
 ## Why Google?
 
-The easiest way to externalise the liability of running the container infrastructure at a very attractive price point. 
+[Google Cloud Platform](https://cloud.google.com/) is not just about the Kubernetes. It is the whole plethora of the additional capabilities - Logging, Monitoring, Persistence, Pub/Sub, Analytics, etc - that have been made easy for the developers.
 
-But [Google Cloud Platform](https://cloud.google.com/) is not just about the Kubernetes. It is the whole plethora of the additional capabilities - Logging, Monitoring, Persistence, Pub/Sub, Analytics, etc.
+Google offerings allow designs where the architect can just pick the xPAAS capabilities needed and compose a business solution. Yet the infrastructure is operated by someone else and it is one of the cheaper options for the comparable performance, features and quality of support.
 
-Google offering set allows designs where the architect can just pick the xPAAS capabilities needed and compose the business solution.  And again - the infrastructure is operated by someone else and it is one of the cheaper options for the comparable performance, features and quality of support.
-
-## Why Camel at Google?
+## Why Camel at Google Cloud Platform?
 
 But is there a place for Apache Camel in the already rich Google Cloud Platform ecosystem? Is there a real need for its capabilities?  Why not, for example, use Spark or Apache Beam? Both available as managed infrastructure - Dataproc and Dataflow respectively. Why not the latter one?
 
-Well, I do think that Dataflow is a great product. It is irreplaceable for the operations at scale where dynamic session calculations are a must. 
+Indeed, Dataflow is a fantastic product. It is irreplaceable for the operations at scale where dynamic session calculations are a must and its pre integration with the rest of GCP technology is fantastic. 
 
 But let's consider simpler scenarios, where the focus is more on the message processing and orchestration, rather than the data handling, situations where there is only a few million exchanges a day to process, solutions where there is a number of the external systems need to be integrated. Dataflow would be coming as a tad too heavy and expensive. 
 
