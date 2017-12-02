@@ -1,6 +1,8 @@
-# Apache Camel in Google Kubernetes Engine
+# Apache Camel with Google Kubernetes Engine
 
 A practical template on how to deploy [Apache Camel](http://camel.apache.org/) solution on [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/).
+
+Prereguisites to build and deploy the demo:
 
 * [Toolstack required](reference/02_toolstack_required.md)
 * [Google Cloud Project setup](reference/03_gcp_setup.md)
@@ -10,12 +12,12 @@ A practical template on how to deploy [Apache Camel](http://camel.apache.org/) s
 
 The presented blueprint is a [widely recognised Camel / Springboot combination](https://egkatzioura.com/2017/11/20/spring-boot-and-apache-camel/) that implements a simple integration scenario:
 
-<img src="./reference/images/gcp_camel_demo.png"/>
-
 - Camel consumes a message from Google PubSub subscription
 - Transforms the data
 - Updates the header to define the Bigquery table partition 
 - Writes to the Bigquery table
+
+<img src="./reference/images/gcp_camel_demo.png"/>
 
 Every exchange is logged at Google Stackdriver Logging and operational metrics collected by Google Stackdriver Monitoring - from both JVM and Camel.
 
@@ -30,7 +32,7 @@ This walkthrough covers:
 
 ### Parameters
 
-Out of the box Kubernetes provides two delivery mechanisms for the configuration values into the container. So once a configuration map or a secret (externalised configuraiton options in Kuberenets) have been defined within the cluster, their values can be made available to the applications either as files or as environmental variables. 
+Out of the box Kubernetes provides two mechanisms to deliver configuration settings into the container:  a configuration map or a secret. Once those have been defined within the cluster, their values can be made available to the applications either as files or as environmental variables. 
 
 The demo relies on [Springboot Externalised Configuration options](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) to ingest both types and that gives the flexibility to override them at any stage of CI/CD lifecycle.
 
